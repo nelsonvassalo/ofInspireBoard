@@ -1,6 +1,6 @@
 #include "ofApp.h"
 
-#define max_items 10
+#define max_items 1
 
 
 
@@ -125,11 +125,10 @@ void ofApp::draw(){
     
     
     
-    ofSetColor(220);
+    ofSetColor(255);
     title.load("futura.ttf", 60);
-    title.drawString("Not Supreme", ofGetWindowWidth()/2-300, ofGetWindowHeight()/2+30);
-
-
+    title.drawString("InspireBoard", ofGetWindowWidth()/2-300, ofGetWindowHeight()/2+30);
+    
 }
 
 //--------------------------------------------------------------
