@@ -10,25 +10,36 @@
 
 
 Image::Image() {
-    changeDir.set(ofRandom(-100.f, ofGetWindowWidth()),ofRandom(-100.f, ofGetWindowHeight()));
+    location.set(ofRandom(-500.f, ofGetWindowWidth()),ofRandom(-200.f, ofGetWindowHeight()));
+    direction.set(ofRandom(-0.1f, 2.f),ofRandom(-0.1f, 1.f));
 }
 
 
 void Image::setup(string url, float x, float y) {
-
-      image.load(url);
-    float w = image.getWidth()/2;
-    float h = image.getHeight()/2;
+    
+    
+    image.load(url);
+    float w = image.getWidth()/2.5;
+    float h = image.getHeight()/2.5;
     if (image.isAllocated()) {
         image.draw(x,y,w,h);
     }
     bang.load("bong.wav");
 }
 
-void Image::update(ofVec2f curve) {
-    changeDir += curve;
-    if (changeDir.x <= 0 || changeDir.x >= ofGetWindowHeight() || changeDir.y <= 0 || changeDir.y >= ofGetWindowHeight() ) {
-        changeDir.perpendicular();
+void Image::update(ofVec2f speed) {
+    direction += speed;
+    
+    location.x += ofClamp(direction.x, 0, 2);
+    location.y += ofClamp(direction.y, 0, 1);
+    
+//    location.x = ofMap(ofSignedNoise(speed.x, -120), 0, 1, 1,ofGetWindowWidth());
+//    location.y = ofMap(ofSignedNoise( speed.y, 120), 0, 1, 1, ofGetWindowHeight());
+    location.x += ofMap(ofNoise(direction.x, -1800)* ofGetElapsedTimef()*0.01,0, 1, 0.1, 2.f);
+    location.y += ofMap(ofNoise(direction.y, 1800) * ofGetElapsedTimef()*0.01,0, 1, 0.1, 1.f);
+    
+    if (location.x <= 0 || location.x >= ofGetWindowWidth() || location.y <= 0 || location.y >= ofGetWindowHeight() ) {
+        location *= -1;
         bang.play();
     }
 //    if (atBounds()) {
@@ -38,11 +49,11 @@ void Image::update(ofVec2f curve) {
 }
 
 void Image::draw() {
-    float w = image.getWidth()/2;
-    float h = image.getHeight()/2;
+    float w = image.getWidth()/2.5;
+    float h = image.getHeight()/2.5;
 
    
-    image.draw(changeDir.x, changeDir.y, w, h);
+    image.draw(location.x, location.y, w, h);
 }
 
 //bool Image::atBounds() {
@@ -51,6 +62,9 @@ void Image::draw() {
 //    } else return false;
 //}
 
+ofImage Image::getImage() {
+    return image;
+}
 
 
 

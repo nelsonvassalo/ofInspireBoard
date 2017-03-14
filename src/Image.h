@@ -25,18 +25,20 @@ public:
   
     void draw();
     
-    void update(ofVec2f curve);
+    void update(ofVec2f speed);
     
     ofImage image;
     
-    ofVec2f move;
+    ofVec2f direction;
     
-    ofVec2f changeDir;
-
+    ofVec2f location;
+    
     
     string url;
     
     bool atBounds();
+    
+    ofImage getImage();
     
     
     

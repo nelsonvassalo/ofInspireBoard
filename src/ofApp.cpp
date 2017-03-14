@@ -8,7 +8,7 @@
 void ofApp::setup(){
     ofBackground(0);
     ofEnableAlphaBlending();
-//    ofSetFrameRate(12);
+//  ofSetFrameRate(1);
     
     // setup Blur (ofxBlurFilter)
 //    blur.setup(ofGetWidth(), ofGetHeight());
@@ -20,14 +20,17 @@ void ofApp::setup(){
 //    
 //    maskFbo.end();
     
+    maskFbo.allocate(ofGetWindowWidth(), ofGetWindowHeight());
+    
     bong.load("bong.wav");
+    
     
 
     
     json.open(url);
-    json.open(url2);
+    json2.open(url2);
     
-     // mask layer texture
+    // mask layer texture
     
     bool parsingSuccessful = json.open(url);
     
@@ -42,16 +45,22 @@ void ofApp::setup(){
     for (int i = 0; i < max_items; i++) {
         float randX = ofRandom(-300.f, ofGetWindowWidth());
         float randY = ofRandom(-300.f, ofGetWindowHeight());
+        float randX2 = ofRandom(-300.f, ofGetWindowWidth());
+        float randY2 = ofRandom(-300.f, ofGetWindowHeight());
         titles[i]  = json["response"]["posts"][i]["photos"][0]["original_size"]["url"].asString();
+        titles2[i] = json2["response"]["posts"][i]["photos"][0]["original_size"]["url"].asString();
         cout << randX << " / " << randY << endl;
         imgs[i].setup(titles[i],randX,randY);
+        masks[i].setup(titles2[i], randX2, randY2);
+        
+        alphaMask[i] = new ofxAlphaMaskTexture(imgs[i].getImage().getTextureReference(),      // top layer texture
+                                            maskFbo.getTextureReference(),    // bottom layer texture
+                                            masks[i].getImage().getTextureReference());
         
         
-        
-        
-        
-
     }
+    
+
 
 }
 
@@ -61,14 +70,21 @@ void ofApp::update(){
 //    cam.update();
     ofSetWindowTitle("frame rate = " + ofToString(ofGetFrameRate(), 2) + "fps");
     
+    ofSetWindowShape(1680, 900);
+    ofSetBackgroundColor(255);
+   
+   
     for (int i = 0; i<max_items; i++ ) {
         
-        float rand = ofRandom(-10.f,10.f);
-        float x = ofMap( ofNoise( ofGetElapsedTimef()/rand, -1200), 0, 1, 0, ofGetWidth()) / 200;
-        float y = ofMap( ofNoise( ofGetElapsedTimef()/rand, 1200), 0, 1, 0, ofGetHeight()) / 200;
-        ofVec2f one = ofVec2f(x, y);
+        float randX = ofRandom(-4.f,4.f);
+        float randY = ofRandom(-2.f,2.f);
+  
         
-        imgs[i].update(one);
+        
+        ofVec2f _temp = ofVec2f(randX, randY);
+        
+        imgs[i].update(_temp);
+        masks[i].update(_temp);
     }
 }
 
@@ -76,17 +92,39 @@ void ofApp::update(){
 void ofApp::draw(){
 
     // draw mask int FBO
-    maskFbo.begin();
-//    ofSetCircleResolution(128);
+//    maskFbo.clear();
+    //    ofSetCircleResolution(128);
 //    ofDrawEllipse(ofGetWidth()/2, ofGetHeight()/2, ofGetHeight(), ofGetHeight());
-    
-    
-    maskFbo.end();
-    
-//    alphaMask->draw();
+
+
     for (int i = 0; i<max_items; i++ ) {
+
         imgs[i].draw();
+        
+
+       
+        
     }
+    
+    
+    
+    for (int i = 0; i<max_items; i++ ) {
+        maskFbo.begin();
+        
+            ofClear(0);
+//            ofPushStyle();
+        //    ofEnableBlendMode(OF_BLENDMODE_ADD);
+        
+//        ofPopStyle();
+    maskFbo.end();
+     alphaMask[i]->draw(300,300);
+    }
+    
+    
+    
+    
+    
+    
     ofSetColor(220);
     title.load("futura.ttf", 60);
     title.drawString("Not Supreme", ofGetWindowWidth()/2-300, ofGetWindowHeight()/2+30);
