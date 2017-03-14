@@ -33,6 +33,7 @@ public:
     
     ofVec2f location;
     
+
     
     string url;
     

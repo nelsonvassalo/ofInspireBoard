@@ -27,13 +27,14 @@ public:
     
     ofTrueTypeFont title;
     ofSoundPlayer bong;
-    ofxAlphaMaskTexture *alphaMask[10];
+    
 
-    ofFbo maskFbo;
+    
     ofVideoGrabber cam;
     ofxBlurShader blur;
-    
+    ofFbo maskFbo;
     ofImage mask;
+    ofxAlphaMaskTexture *alphaMask[10];
     
     string url = "http://api.tumblr.com/v2/blog/visual-storage.tumblr.com/posts?api_key=049tE8j8UbMVLqvmkx36KIxfGM0fgp4hCnltTHUOYcizX7K2fo";
     string url2 = "http://api.tumblr.com/v2/blog/whokillsgraphicdesign.tumblr.com/posts?api_key=049tE8j8UbMVLqvmkx36KIxfGM0fgp4hCnltTHUOYcizX7K2fo";

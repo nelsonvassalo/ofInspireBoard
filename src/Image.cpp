@@ -19,8 +19,8 @@ void Image::setup(string url, float x, float y) {
     
     
     image.load(url);
-    float w = image.getWidth()/2.5;
-    float h = image.getHeight()/2.5;
+    float w = image.getWidth()/1.5;
+    float h = image.getHeight()/1.5;
     if (image.isAllocated()) {
         image.draw(x,y,w,h);
     }
@@ -39,7 +39,7 @@ void Image::update(ofVec2f speed) {
     location.y += ofMap(ofNoise(direction.y, 1800) * ofGetElapsedTimef()*0.01,0, 1, 0.1, 1.f);
     
     if (location.x <= 0 || location.x >= ofGetWindowWidth() || location.y <= 0 || location.y >= ofGetWindowHeight() ) {
-        location *= -1;
+        location.set(0,0);
         bang.play();
     }
 //    if (atBounds()) {
@@ -49,8 +49,8 @@ void Image::update(ofVec2f speed) {
 }
 
 void Image::draw() {
-    float w = image.getWidth()/2.5;
-    float h = image.getHeight()/2.5;
+    float w = image.getWidth()/1.5;
+    float h = image.getHeight()/1.5;
 
    
     image.draw(location.x, location.y, w, h);

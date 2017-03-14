@@ -70,7 +70,7 @@ void ofApp::update(){
 //    cam.update();
     ofSetWindowTitle("frame rate = " + ofToString(ofGetFrameRate(), 2) + "fps");
     
-    ofSetWindowShape(1680, 900);
+    ofSetWindowShape(1680, 945);
     ofSetBackgroundColor(255);
    
    
