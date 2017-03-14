@@ -29,6 +29,9 @@ public:
     
     ofVec2f move;
     
+    ofVec2f changeDir;
+
+    
     string url;
     
     bool atBounds();

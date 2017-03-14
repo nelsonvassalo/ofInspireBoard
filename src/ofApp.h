@@ -25,7 +25,9 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    ofxAlphaMaskTexture *alphaMask;
+    ofTrueTypeFont title;
+    ofSoundPlayer bong;
+    ofxAlphaMaskTexture *alphaMask;    
 
     ofFbo maskFbo;
     ofVideoGrabber cam;

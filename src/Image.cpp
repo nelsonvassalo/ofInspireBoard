@@ -10,7 +10,7 @@
 
 
 Image::Image() {
-
+    changeDir.set(ofRandom(-5.f, 5.f),ofRandom(-5.f, 5.f));
 }
 
 
@@ -23,7 +23,7 @@ void Image::setup(string url, float x, float y) {
 }
 
 void Image::update(ofVec2f curve) {
-    move += curve;
+//    moveDir += curve;
 //    if (atBounds()) {
 //        move *= (-1, -1);
 //    }

@@ -2,6 +2,8 @@
 
 #define max_items 4
 
+
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0);
@@ -16,6 +18,10 @@ void ofApp::setup(){
 //    ofClear(0, 0, 0);
 //    
 //    maskFbo.end();
+    
+    bong.load("bong.wav");
+    
+
     
     json.open(url);
     
@@ -32,8 +38,11 @@ void ofApp::setup(){
     }
     
     for (int i = 0; i < max_items; i++) {
+        float randX = ofRandom(-100.f, ofGetWindowWidth());
+        float randY = ofRandom(-100.f, ofGetWindowHeight());
         titles[i]  = json["response"]["posts"][i]["photos"][0]["original_size"]["url"].asString();
-        imgs[i].setup(titles[i],0,0);
+        cout << randX << " / " << randY << endl;
+        imgs[i].setup(titles[i],randX,randY);
     
 
     }
@@ -71,7 +80,9 @@ void ofApp::draw(){
     for (int i = 0; i<max_items; i++ ) {
         imgs[i].draw();
     }
-    
+    ofSetColor(220);
+    title.load("futura.ttf", 60);
+    title.drawString("Not Supreme", ofGetWindowWidth()/2, ofGetWindowHeight()/2);
 //
 //    for(int i = 0; i<50; i++) {
 //        
@@ -104,6 +115,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+    bong.play();
     
 }
 
