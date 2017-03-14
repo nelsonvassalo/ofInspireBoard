@@ -17,6 +17,8 @@
 class Image {
 public:
     
+    ofSoundPlayer bang;
+    
     Image();
     
     void setup(string url, float x = ofRandom(1.f, ofGetWidth()), float y = ofRandom(1.f,ofGetHeight()));

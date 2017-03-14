@@ -33,12 +33,16 @@ public:
     ofVideoGrabber cam;
     ofxBlurShader blur;
     
-    string url = "http://api.tumblr.com/v2/blog/visual-storage.tumblr.com/posts?api_key=049tE8j8UbMVLqvmkx36KIxfGM0fgp4hCnltTHUOYcizX7K2fo";
+    ofImage mask;
+    
+    string url = "http://api.tumblr.com/v2/blog/visual-storage.tumblr.com/posts?api_key=049tE8j8UbMVLqvmkx36KIxfGM0fgp4hCnltTHUOYcizX7K2fo&nsfw=true";
+    string url2 = "http://api.tumblr.com/v2/blog/visual-storage.tumblr.com/posts?api_key=049tE8j8UbMVLqvmkx36KIxfGM0fgp4hCnltTHUOYcizX7K2fo";
     
     ofxJSONElement json;
     
     
     Image imgs[10];
+    Image masks[10];
     string titles[10];
     
     

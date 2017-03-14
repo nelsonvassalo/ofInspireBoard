@@ -1,17 +1,18 @@
 #include "ofApp.h"
 
-#define max_items 4
+#define max_items 10
 
 
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0);
+    ofEnableAlphaBlending();
 //    ofSetFrameRate(12);
     
     // setup Blur (ofxBlurFilter)
 //    blur.setup(ofGetWidth(), ofGetHeight());
-//    
+//
 //    cam.initGrabber(ofGetWidth(), ofGetHeight());
 //    maskFbo.allocate(ofGetWidth(), ofGetHeight());
 //    maskFbo.begin();
@@ -24,6 +25,7 @@ void ofApp::setup(){
 
     
     json.open(url);
+    json.open(url2);
     
      // mask layer texture
     
@@ -38,18 +40,19 @@ void ofApp::setup(){
     }
     
     for (int i = 0; i < max_items; i++) {
-        float randX = ofRandom(-100.f, ofGetWindowWidth());
-        float randY = ofRandom(-100.f, ofGetWindowHeight());
+        float randX = ofRandom(-300.f, ofGetWindowWidth());
+        float randY = ofRandom(-300.f, ofGetWindowHeight());
         titles[i]  = json["response"]["posts"][i]["photos"][0]["original_size"]["url"].asString();
         cout << randX << " / " << randY << endl;
         imgs[i].setup(titles[i],randX,randY);
-    
+        
+        
+        
+        
+        
 
     }
-//    alphaMask = new ofxAlphaMaskTexture(cam.getTexture(),        // top layer texture
-//                                        images[2].getTexture(),  // bottom layer texture
-//                                        maskFbo.getTexture());
-//
+
 }
 
 
@@ -57,39 +60,37 @@ void ofApp::setup(){
 void ofApp::update(){
 //    cam.update();
     ofSetWindowTitle("frame rate = " + ofToString(ofGetFrameRate(), 2) + "fps");
-    ofVec2f one = ofVec2f(1.f,-1.f);
     
     for (int i = 0; i<max_items; i++ ) {
+        
+        float rand = ofRandom(-10.f,10.f);
+        float x = ofMap( ofNoise( ofGetElapsedTimef()/rand, -1200), 0, 1, 0, ofGetWidth()) / 200;
+        float y = ofMap( ofNoise( ofGetElapsedTimef()/rand, 1200), 0, 1, 0, ofGetHeight()) / 200;
+        ofVec2f one = ofVec2f(x, y);
+        
         imgs[i].update(one);
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    float blurAmount = ofMap(mouseX, 0, ofGetWidth(), 0, 10.0);
 
     // draw mask int FBO
-//    maskFbo.begin();
-//    blur.begin(blurAmount, 30); // blur begin
+    maskFbo.begin();
 //    ofSetCircleResolution(128);
 //    ofDrawEllipse(ofGetWidth()/2, ofGetHeight()/2, ofGetHeight(), ofGetHeight());
-//    blur.end(); // blur end
-//    maskFbo.end();
-//    
+    
+    
+    maskFbo.end();
+    
 //    alphaMask->draw();
     for (int i = 0; i<max_items; i++ ) {
         imgs[i].draw();
     }
     ofSetColor(220);
     title.load("futura.ttf", 60);
-    title.drawString("Not Supreme", ofGetWindowWidth()/2, ofGetWindowHeight()/2);
-//
-//    for(int i = 0; i<50; i++) {
-//        
-//        if(images[i].isAllocated()) {
-//          images[i].draw(ofRandom(1, ofGetWindowWidth()),ofRandom(1, ofGetWindowHeight()));
-//        }
-//    }
+    title.drawString("Not Supreme", ofGetWindowWidth()/2-300, ofGetWindowHeight()/2+30);
+
 
 }
 
