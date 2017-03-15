@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
-#define max_items 10
 
+#define max_items 13
 
 
 //--------------------------------------------------------------
@@ -20,7 +20,7 @@ void ofApp::setup(){
 //    
 //    maskFbo.end();
     
-    maskFbo.allocate(ofGetWindowWidth(), ofGetWindowHeight());
+
     
     bong.load("bong.wav");
     
@@ -50,12 +50,9 @@ void ofApp::setup(){
         titles[i]  = json["response"]["posts"][i]["photos"][0]["original_size"]["url"].asString();
         titles2[i] = json2["response"]["posts"][i]["photos"][0]["original_size"]["url"].asString();
         cout << randX << " / " << randY << endl;
-        imgs[i].setup(titles[i],randX,randY);
-        masks[i].setup(titles2[i], randX2, randY2);
+        imgs[i].setup(titles[i], titles2[i], randX, randY, randX2, randY2);
         
-        alphaMask[i] = new ofxAlphaMaskTexture(imgs[i].getImage().getTextureReference(),      // top layer texture
-                                            maskFbo.getTextureReference(),    // bottom layer texture
-                                            masks[i].getImage().getTextureReference());
+        
         
         
     }
@@ -73,7 +70,6 @@ void ofApp::update(){
     ofSetWindowShape(1680, 945);
     ofSetBackgroundColor(255);
    
-   
     for (int i = 0; i<max_items; i++ ) {
         
         float randX = ofRandom(-4.f,4.f);
@@ -84,7 +80,6 @@ void ofApp::update(){
         ofVec2f _temp = ofVec2f(randX, randY);
         
         imgs[i].update(_temp);
-        masks[i].update(_temp);
     }
 }
 
@@ -101,33 +96,12 @@ void ofApp::draw(){
 
         imgs[i].draw();
         
-
-       
-        
     }
-    
-    
-    
-    for (int i = 0; i<max_items; i++ ) {
-        maskFbo.begin();
         
-            ofClear(0);
-//            ofPushStyle();
-        //    ofEnableBlendMode(OF_BLENDMODE_ADD);
-        
-//        ofPopStyle();
-    maskFbo.end();
-     alphaMask[i]->draw(300,300);
-    }
-    
-    
-    
-    
-    
     
     ofSetColor(220);
     title.load("futura.ttf", 60);
-    title.drawString("Not Supreme", ofGetWindowWidth()/2-300, ofGetWindowHeight()/2+30);
+    title.drawString("InspireBoard", ofGetWindowWidth()/2-300, ofGetWindowHeight()/2+30);
 
 
 }
