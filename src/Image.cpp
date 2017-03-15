@@ -15,16 +15,27 @@ Image::Image() {
 }
 
 
-void Image::setup(string url, float x, float y) {
+void Image::setup(string url, string url2, float x, float y, float x2, float y2) {
     
     
     image.load(url);
-    float w = image.getWidth()/1.5;
-    float h = image.getHeight()/1.5;
-    if (image.isAllocated()) {
-        image.draw(x,y,w,h);
-    }
+    mask.load(url2);
+    float w = image.getWidth();
+    float h = image.getHeight();
+    float w2 = mask.getWidth();
+    float h2 = image.getHeight();
+//    if (image.isAllocated()) {
+//        image.draw(x,y,w,h);
+//    }
     bang.load("bong.wav");
+    
+    maskFbo.allocate(ofGetWindowWidth(), ofGetWindowHeight());
+    
+    
+    alphaMask = new ofxAlphaMaskTexture(image.getTextureReference(),      // top layer texture
+                                           maskFbo.getTextureReference(),    // bottom layer texture
+                                           mask.getTextureReference());
+    
 }
 
 void Image::update(ofVec2f speed) {
@@ -49,11 +60,22 @@ void Image::update(ofVec2f speed) {
 }
 
 void Image::draw() {
-    float w = image.getWidth()/1.5;
-    float h = image.getHeight()/1.5;
+    float w = image.getWidth();
+    float h = image.getHeight();
+    float w2 = mask.getWidth();
+    float h2 = mask.getHeight();
 
+    maskFbo.begin();
+    
+    ofClear(0);
+    
+//    image.draw(location.x, location.y, w, h);
+
+    maskFbo.end();
    
-    image.draw(location.x, location.y, w, h);
+    alphaMask->draw(location.x,location.y);
+
+    ;
 }
 
 //bool Image::atBounds() {
