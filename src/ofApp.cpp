@@ -99,7 +99,7 @@ void ofApp::draw(){
     }
         
     
-    ofSetColor(220);
+    ofSetColor(255);
     title.load("futura.ttf", 60);
     title.drawString("InspireBoard", ofGetWindowWidth()/2-300, ofGetWindowHeight()/2+30);
 
