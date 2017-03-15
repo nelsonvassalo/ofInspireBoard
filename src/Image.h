@@ -10,6 +10,8 @@
 #define Image_h
 
 #include "ofMain.h"
+#include "ofxAlphaMaskTexture.h"
+#include "ofxBlurShader.h"
 
 
 #endif /* Image_hpp */
@@ -21,17 +23,21 @@ public:
     
     Image();
     
-    void setup(string url, float x = ofRandom(1.f, ofGetWidth()), float y = ofRandom(1.f,ofGetHeight()));
+    void setup(string url, string url2, float x = ofRandom(1.f, ofGetWidth()), float y = ofRandom(1.f,ofGetHeight()), float x2 = ofRandom(1.f, ofGetWidth()), float y2 = ofRandom(1.f,ofGetHeight()) );
   
     void draw();
     
-    void update(ofVec2f speed);
-    
+    ofxBlurShader blur;
+    ofFbo maskFbo;
     ofImage image;
+    ofImage mask;
+    ofxAlphaMaskTexture *alphaMask;
+    void update(ofVec2f speed);
     
     ofVec2f direction;
     
     ofVec2f location;
+    
     
 
     
@@ -40,6 +46,8 @@ public:
     bool atBounds();
     
     ofImage getImage();
+#include "ofxAlphaMaskTexture.h"
+#include "ofxBlurShader.h"
     
     
     
